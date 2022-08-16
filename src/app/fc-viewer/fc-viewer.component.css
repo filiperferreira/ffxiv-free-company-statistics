@@ -1,0 +1,41 @@
+.centered-button {
+    display: flex;
+    justify-content: center;
+}
+
+.center-text {
+    display: block;
+    text-align: center;
+}
+
+.centered-bar {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.centered-button {
+    display: flex;
+    justify-content: center;
+}
+
+.padder {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.margin-adjust {
+    margin-top: -20px;
+    margin-bottom: 50px;
+}
+
+.small-centered {
+    display: block;
+    text-align: center;
+    font-size: small;
+    font-style: italic;
+}
+
+.container {
+    width: 50%;
+    margin-left: 25%;
+}

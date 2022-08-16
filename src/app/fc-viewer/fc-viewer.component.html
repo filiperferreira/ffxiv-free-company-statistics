@@ -1,0 +1,83 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button onclick="location.href='main'">
+        <mat-icon>home</mat-icon>
+    </button>
+    <span>FFXIV Free Company Statistics</span>
+</mat-toolbar>
+<div>
+    <div *ngIf="isSearching()">
+        <div class="center-text">
+            Searching...
+        </div>
+        <div class="centered-button">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+    <div *ngIf="!isFreeCompanyNull()">
+        <h1 class="center-text">{{getFreeCompanyName()}}</h1>
+        <div class="margin-adjust">
+            <span class="center-text">Active Members: {{getMemberCount()}}</span>
+        </div>
+        <div *ngIf="!isParsing() && getParsedMembers().length == 0">
+            <h2 class="center-text">Choose how to retrieve member data:</h2>
+            <div class="centered-button">
+                <div>
+                    <button mat-raised-button color="primary" class="padder"
+                        (click)="parseMembers()">
+                        Get member data from Lodestone
+                    </button>
+                    <span class="small-centered">(Can take a while to complete)</span>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" class="padder"
+                        (click)="getMembersFromStorage()" [disabled]="!hasSavedData()">
+                        Get saved member data
+                    </button><br>
+                    <span class="small-centered">(Data saved in: {{getSavedDate()}})</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isParsing()">
+        <div class="center-text">
+            Getting members data from Lodestone, this might take a while...
+        </div>
+        <div class="centered-bar">
+            <mat-progress-bar mode="determinate" value="{{getProgress()}}">
+            </mat-progress-bar>
+        </div>
+    </div>
+    <div *ngIf="getParsedMembers().length != 0">
+        <h3 class="center-text">Get Member Distribution by:</h3>
+        <div class="centered-button">
+            <button mat-raised-button color="primary" class="padder"
+                (click)="getRaceDistribution()">
+                Race Only
+            </button>
+            <button mat-raised-button color="primary" class="padder"
+                (click)="getGenderDistribution()">
+                Race and Gender
+            </button>
+        </div>
+        <div class="container" *ngIf="areRacesDistributed()">
+            <div>
+                <div class="chart">
+                    <canvas baseChart
+                        [data]="parseRaceDistributionData()"
+                        [type]="pieChartType"
+                        [options]="pieChartOptions"
+                        [plugins]="pieChartPlugins">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div style="display: block" *ngIf="areGendersDistributed()" class="container">
+            <canvas baseChart
+                [data]="parseGenderDistributionData()"
+                [options]="barChartOptions"
+                [plugins]="barChartPlugins"
+                [type]="barChartType">
+            </canvas>
+        </div>
+    </div>
+</div>

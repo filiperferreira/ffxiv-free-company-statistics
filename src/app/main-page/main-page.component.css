@@ -1,0 +1,75 @@
+.centered {
+    text-align: center;
+}
+
+.block {
+    display: block;
+}
+
+.centered-search {
+    display: inline-block;
+    width: 50%;
+    padding-left: 25%;
+}
+
+.centered-button {
+    display: flex;
+    justify-content: center;
+}
+
+.center-text {
+    display: block;
+    text-align: center;
+}
+
+.padder {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.results {
+    margin-top: 50px;
+}
+
+.fc-crest {
+    float: left;
+    padding: 32px;
+    position: relative;
+}
+
+.fc-crest > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.fc-name {
+    padding: 10px 5px;
+    float: left;
+    left: 70px;
+    text-align: center;
+}
+
+.grid {
+    overflow: auto;
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+}
+
+.tile {
+    float: left;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: lightgray;
+    margin: 5px;
+}
+
+.tile:hover {
+    background-color: lightblue;
+}
+
+.padder {
+    margin-left: 10px;
+    margin-right: 10px;
+}

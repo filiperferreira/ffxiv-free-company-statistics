@@ -1,0 +1,81 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button onclick="location.href='main'">
+        <mat-icon>home</mat-icon>
+    </button>
+    <span>FFXIV Free Company Statistics</span>
+</mat-toolbar>
+<h1 class="centered">1. Search for your Free Company</h1>
+<div>
+    <mat-form-field appearance="outline" class="centered-search">
+        <mat-label>Free Company Search</mat-label>
+        <input matInput value="" #searchText>
+    </mat-form-field><br>
+    <div class="centered-button">
+        <button
+            mat-raised-button
+            class="padder"
+            color="primary"
+            (click)="searchFreeCompany(searchText.value, 1)"
+        >
+            Search
+        </button>
+        <button mat-raised-button class="padder" color="primary" (click)="clearList()">
+            Clear
+        </button>
+    </div>
+</div>
+<div class="results">
+    <div *ngIf="isSearching()">
+        <div class="center-text">
+            Searching...
+        </div>
+        <div class="centered-button">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+    <div *ngIf="!isFreeCompanyListEmpty()">
+        <h1 class="centered">2. Choose your Free Company from the list</h1>
+        <div class="grid">
+            <div *ngFor="let freeCompany of listFreeCompanies()" class="tile">
+                <a href="fc/{{freeCompany.ID}}">
+                    <div class="fc-crest">
+                        <img src="{{freeCompany.Crest[0]}}">
+                        <img src="{{freeCompany.Crest[1]}}">
+                        <img src="{{freeCompany.Crest[2]}}">
+                    </div>
+                    <div class="fc-name">
+                        {{freeCompany.Name}}<br>
+                        {{freeCompany.Server}}
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!--<mat-grid-list cols="4" gutterSize="10px" rowHeight="3:1" class="grid">
+            <mat-grid-tile *ngFor="let freeCompany of listFreeCompanies()" class="tile">
+                <a href="fc/{{freeCompany.ID}}">
+                    <div class="fc-crest">
+                        <img src="{{freeCompany.Crest[0]}}">
+                        <img src="{{freeCompany.Crest[1]}}">
+                        <img src="{{freeCompany.Crest[2]}}">
+                    </div>
+                    <div class="fc-name">
+                        {{freeCompany.Name}}<br>
+                        {{freeCompany.Server}}
+                    </div>
+                </a>
+            </mat-grid-tile>
+        </mat-grid-list>-->
+        <div class="centered-button">
+            <button mat-raised-button [disabled]="getPreviousPage() == null"
+                color="primary" class="padder"
+                (click)="searchFreeCompany(getSearchText(), getPreviousPage())">
+                Previous Page
+            </button>
+            <button mat-raised-button [disabled]="getNextPage() == null"
+                color="primary" class="padder"
+                (click)="searchFreeCompany(getSearchText(), getNextPage())">
+                Next Page
+            </button>
+        </div>
+    </div>
+</div>
