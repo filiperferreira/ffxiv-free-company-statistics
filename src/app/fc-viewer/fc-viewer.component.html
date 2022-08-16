@@ -58,22 +58,30 @@
                 (click)="getGenderDistribution()">
                 Race and Gender
             </button>
+            <button mat-raised-button color="primary" class="padder"
+                (click)="getTribeDistribution()">
+                Tribe
+            </button>
         </div>
-        <div class="container" *ngIf="areRacesDistributed()">
-            <div>
-                <div class="chart">
-                    <canvas baseChart
-                        [data]="parseRaceDistributionData()"
-                        [type]="pieChartType"
-                        [options]="pieChartOptions"
-                        [plugins]="pieChartPlugins">
-                    </canvas>
-                </div>
-            </div>
+        <div style="display: block" *ngIf="areRacesDistributed()" class="container">
+            <canvas baseChart
+                [data]="parseRaceDistributionData()"
+                [options]="barChartOptions"
+                [plugins]="barChartPlugins"
+                [type]="barChartType">
+            </canvas>
         </div>
         <div style="display: block" *ngIf="areGendersDistributed()" class="container">
             <canvas baseChart
                 [data]="parseGenderDistributionData()"
+                [options]="barChartOptions"
+                [plugins]="barChartPlugins"
+                [type]="barChartType">
+            </canvas>
+        </div>
+        <div style="display: block" *ngIf="areTribesDistributed()" class="container">
+            <canvas baseChart
+                [data]="parseTribeDistributionData()"
                 [options]="barChartOptions"
                 [plugins]="barChartPlugins"
                 [type]="barChartType">

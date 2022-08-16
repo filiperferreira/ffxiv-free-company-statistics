@@ -20,7 +20,6 @@ export class FcViewerService {
   private parsing: boolean = false;
   private progress: number = 0;
   private idString: string = "";
-  private raceList: Race[] = [];
 
   constructor(
     private xivapi: XivapiService
@@ -128,6 +127,7 @@ export class FcViewerService {
     return this.parsedMembers;
   }
 
+  private raceList: Race[] = [];
   buildRaceList(): void {
     var raceObservable: Observable<any> = this.xivapi.getList(XivapiEndpoint.Race);
     raceObservable.subscribe(result => {
@@ -139,14 +139,31 @@ export class FcViewerService {
     });
   }
 
+  private tribeList: Race[] = [];
+  buildTribeList(): void {
+    var tribeObservable: Observable<any> = this.xivapi.getList(XivapiEndpoint.Tribe);
+    tribeObservable.subscribe(result => {
+      this.tribeList = [];
+      for (var tribe of result.Results) {
+        var newTribe: Race = {id: tribe.ID, name: tribe.Name};
+        this.tribeList.push(newTribe);
+      }
+    })
+  }
+
+  clearAllData(): void {
+    this.raceDistribution = [];
+    this.maleRaceDistribution = [];
+    this.femaleRaceDistribution = [];
+    this.tribeDistribution = [];
+  }
+
   private raceDistribution: number[] = [];
   areRacesDistributed(): boolean {
     return this.raceDistribution.length != 0;
   }
   getRaceDistribution(): void {
-    this.raceDistribution = [];
-    this.maleRaceDistribution = [];
-    this.femaleRaceDistribution = [];
+    this.clearAllData();
     for (var i = 0; i < this.raceList.length; i++) {
       this.raceDistribution.push(0);
     }
@@ -156,15 +173,15 @@ export class FcViewerService {
     }
   }
 
-  parseRaceDistributionData(): ChartData<'pie', number[], string | string[]> {
+  parseRaceDistributionData(): ChartData<'bar'> {
     var raceNames: string[] = [];
     for (var i = 0; i < this.raceList.length; i++) {
       raceNames.push(this.raceList[i].name);
     }
-    var pieChartData: ChartData<'pie', number[], string | string[]> = {
+    var pieChartData: ChartData<'bar'> = {
       labels: raceNames,
       datasets: [{
-        data: this.raceDistribution
+        data: this.raceDistribution, label: 'Race'
       }]
     }
     return pieChartData;
@@ -176,9 +193,7 @@ export class FcViewerService {
     return this.maleRaceDistribution.length != 0;
   }
   getGenderDistribution(): void {
-    this.raceDistribution = [];
-    this.maleRaceDistribution = [];
-    this.femaleRaceDistribution = [];
+    this.clearAllData();
     for (var i = 0; i < this.raceList.length; i++) {
       this.maleRaceDistribution.push(0);
       this.femaleRaceDistribution.push(0);
@@ -205,6 +220,35 @@ export class FcViewerService {
       datasets: [
         {data: this.maleRaceDistribution, label: 'Male'},
         {data: this.femaleRaceDistribution, label: 'Female'}
+      ]
+    }
+    return barChartData;
+  }
+
+  private tribeDistribution: number[] = [];
+  areTribesDistributed(): boolean {
+    return this.tribeDistribution.length != 0;
+  }
+  getTribeDistribution(): void {
+    this.clearAllData();
+    for (var i = 0; i < this.tribeList.length; i++) {
+      this.tribeDistribution.push(0);
+    }
+    for (var player of this.parsedMembers) {
+      var playerTribe = player.Character.Tribe;
+      this.tribeDistribution[playerTribe - 1]++;
+    }
+  }
+
+  parseTribeDistributionData(): ChartData<'bar'> {
+    var tribeNames: string[] = [];
+    for (var i = 0; i < this.tribeList.length; i++) {
+      tribeNames.push(this.tribeList[i].name);
+    }
+    var barChartData: ChartData<'bar'> = {
+      labels: tribeNames,
+      datasets: [
+        {data: this.tribeDistribution, label: 'Tribe'}
       ]
     }
     return barChartData;

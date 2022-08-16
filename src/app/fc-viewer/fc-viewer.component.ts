@@ -23,6 +23,7 @@ export class FcViewerComponent implements OnInit {
   ngOnInit(): void {
     this.searchFreeCompany();
     this.fcService.buildRaceList();
+    this.fcService.buildTribeList();
   }
 
   hasSavedData(): boolean {
@@ -92,7 +93,7 @@ export class FcViewerComponent implements OnInit {
     this.fcService.getRaceDistribution();
   }
 
-  parseRaceDistributionData(): ChartData<'pie', number[], string | string[]> { 
+  parseRaceDistributionData(): ChartData<'bar'> { 
     return this.fcService.parseRaceDistributionData();
   }
 
@@ -112,26 +113,19 @@ export class FcViewerComponent implements OnInit {
     return this.fcService.parseGenderDistributionData();
   }
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+  areTribesDistributed(): boolean {
+    return this.fcService.areTribesDistributed();
+  }
 
-  public pieChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      datalabels: {
-        formatter: (value, ctx) => {
-          if (ctx.chart.data.labels) {
-            return ctx.chart.data.labels[ctx.dataIndex];
-          }
-        },
-      },
-    }
-  };
-  public pieChartType: ChartType = 'pie';
-  public pieChartPlugins = [ DatalabelsPlugin ];
+  getTribeDistribution(): void {
+    this.fcService.getTribeDistribution();
+  }
+
+  parseTribeDistributionData(): ChartData<'bar'> {
+    return this.fcService.parseTribeDistributionData();
+  }
+
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
