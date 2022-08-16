@@ -47,7 +47,7 @@
             </mat-progress-bar>
         </div>
     </div>
-    <div *ngIf="getParsedMembers().length != 0">
+    <div *ngIf="!isParsing() && getParsedMembers().length != 0">
         <h3 class="center-text">Get Member Distribution by:</h3>
         <div class="centered-button">
             <button mat-raised-button color="primary" class="padder"
